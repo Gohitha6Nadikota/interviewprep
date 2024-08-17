@@ -81,7 +81,7 @@ function App() {
                   margin: "20px",
                   borderRadius: "8px",
                   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                  color: "white",
+                  color: "black",
                 }}
                 onClick={() => handleClick(topic.id)}
               >
