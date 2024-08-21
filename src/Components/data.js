@@ -36,7 +36,92 @@ export const topics = [
       "A minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.",
   },
 ];
-
+export const newquestions = [
+  {
+    id: 1,
+    name: "React Basics",
+    tags: {
+      coreReact: [
+        {
+          id: 1,
+          question: "What is React?",
+          answer: "A JavaScript library for building user interfaces.",
+          code: "const element = <h1>Hello, world!</h1>;",
+        },
+        {
+          id: 2,
+          question: "What is JSX?",
+          answer:
+            "A syntax extension for JavaScript that looks similar to XML.",
+          code: "const element = <div>Hello, JSX!</div>;",
+        },
+      ],
+      reactRouter: [
+        {
+          id: 1,
+          question: "What is React Router?",
+          answer: "A library for routing in React applications.",
+          code: "import { BrowserRouter as Router, Route } from 'react-router-dom';",
+        },
+        {
+          id: 2,
+          question: "How do you create a route in React Router?",
+          answer:
+            "You create a route using the Route component with a path and a component.",
+          code: "<Route path='/about' component={About} />",
+        },
+      ],
+      stateManagement: [
+        {
+          id: 1,
+          question: "What is state in React?",
+          answer:
+            "State is an object that determines how that component renders and behaves.",
+          code: "const [count, setCount] = useState(0);",
+        },
+        {
+          id: 2,
+          question: "What is the purpose of useEffect?",
+          answer:
+            "useEffect is a Hook that lets you perform side effects in function components.",
+          code: "useEffect(() => { document.title = `Count: ${count}`; }, [count]);",
+        },
+      ],
+      hooks: [
+        {
+          id: 1,
+          question: "What are React Hooks?",
+          answer:
+            "Hooks are functions that let you use state and other React features without writing a class.",
+          code: "const [state, setState] = useState(initialState);",
+        },
+        {
+          id: 2,
+          question: "What is the useCallback Hook?",
+          answer: "useCallback returns a memoized callback function.",
+          code: "const memoizedCallback = useCallback(() => { doSomething(a, b); }, [a, b]);",
+        },
+      ],
+      contextAPI: [
+        {
+          id: 1,
+          question: "What is the Context API?",
+          answer:
+            "The Context API is a way to create global state in a React application.",
+          code: "const MyContext = createContext();",
+        },
+        {
+          id: 2,
+          question: "How do you use the Context API?",
+          answer:
+            "You use the Context API by creating a context and wrapping components in a Provider.",
+          code: "<MyContext.Provider value={/* some value */}><App /></MyContext.Provider>",
+        },
+      ],
+    },
+  },
+  // Other topics can be added here...
+];
 
 export const questions = [
   {
