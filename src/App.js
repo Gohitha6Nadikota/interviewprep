@@ -25,6 +25,7 @@ function App() {
             alignItems: "center",
             justifyContent: "space-between",
             color: "white",
+            position:'fixed'
           }}
         >
           <GiAchievement
