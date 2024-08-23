@@ -8,20 +8,16 @@ import { newquestions } from "./data";
 const InfoCard = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const navigate = useNavigate();
 
-  const fetchData = () => {
+  useEffect(() => {
     const topic = newquestions.find((topic) => topic.id === parseInt(id));
     if (topic) {
       setData(topic);
     } else {
       setData({ tags: {} });
     }
-  };
-
-  useEffect(() => {
-    fetchData();
   }, [id]);
 
   if (!data) {
@@ -32,20 +28,13 @@ const InfoCard = () => {
     navigate("/");
   };
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
-
-  const scrollToSection = (sectionId) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   const handleCopy = (code) => {
     navigator.clipboard.writeText(code);
     alert("Code copied to clipboard!");
+  };
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
   return (
@@ -53,194 +42,184 @@ const InfoCard = () => {
       style={{
         display: "flex",
         flexDirection: "row",
-        position: "relative",
-        flexWrap: "wrap",
         marginTop: "9vh",
         width: "100%",
+        height: "100vh",
+        overflow: "hidden",
       }}
     >
+      {/* Back Arrow */}
       <div
+        onClick={handleBack}
         style={{
-          padding: "20px",
-          width: sidebarOpen ? "80%" : "100%",
           display: "flex",
-          flexDirection: "column",
-          transition: "width 0.3s ease",
+          alignItems: "center",
+          position: "absolute",
+          top: "6px",
+          left: "20px",
+          cursor: "pointer",
+          zIndex: 2, // Ensure it stays above other content
         }}
       >
-        <div
-          onClick={handleBack}
-          style={{
-            width: "100%",
-            display: "flex",
-            alignItems: "flex-start",
-            marginBottom: "20px",
-            cursor: "pointer",
-          }}
-        >
-          <BiArrowBack style={{ fontSize: "23px", color: "black" }} />
-        </div>
+        <BiArrowBack style={{ fontSize: "23px", color: "black" }} />
+      </div>
+
+      {isSidebarOpen && (
         <div
           style={{
-            display: "flex",
-            flexDirection: "row",
-            width: "100%",
+            width: "20%",
+            backgroundColor: "#508D4E",
+            color: "black",
+            padding: "20px",
+            borderRight: "1px solid #ddd",
+            position: "fixed",
+            height: "100%",
+            overflowY: "auto",
           }}
         >
           <div
             style={{
-              backgroundColor: "#508D4E",
-              color: "black",
-              padding: "10px 20px",
-              border: "none",
-              borderRadius: "5px",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              width: "20%",
-              cursor: "pointer",
-              fontWeight: "bold",
-              height: "20px",
             }}
-            onClick={toggleSidebar}
           >
-            <p
+            <div style={{ fontWeight: "bold", fontSize: "18px" }}>Concepts</div>
+            <IoMdClose
+              onClick={toggleSidebar}
               style={{
-                backgroundColor: "#508D4E",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-                fontSize: "16px",
+                fontSize: "24px",
+                color: "white",
+                cursor: "pointer",
               }}
-            >
-              Concepts
-            </p>
-            {sidebarOpen && <IoMdClose fontSize="20px" />}
-
-            <div></div>
+            />
           </div>
-          <div
+          <ul
             style={{
-              backgroundColor: "transparent",
-              color: "black",
-              padding: "10px 20px",
-              border: "none",
-              borderRadius: "5px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              cursor: "pointer",
-              fontWeight: "bold",
-              height: "20px",
-              fontSize: "18px",
-            }}
-          >
-            {data.name + " Questions"}
-          </div>
-        </div>
-        <div style={{display:'flex',width:'100%',flexDirection:'row'}}>
-         
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              width: sidebarOpen ? "80%" : "100%",
-              marginTop: "25px",
+              listStyleType: "none",
+              padding: "0",
+              marginTop: "20px",
             }}
           >
             {Object.keys(data.tags).map((topic) => (
-              <div
-                id={topic}
+              <li
                 key={topic}
-                style={{ marginBottom: "20px", width: "100%" }}
+                style={{
+                  marginBottom: "15px",
+                  cursor: "pointer",
+                }}
               >
-                <h3
+                <a
+                  href={`#${topic}`}
                   style={{
-                    width: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginTop: "5px",
+                    color: "white",
+                    textDecoration: "none",
+                    fontSize: "16px",
                   }}
                 >
-                  {topic + " "}
-                  Questions
-                </h3>
-                <div
-                  style={{
-                    width: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  {data.tags[topic].length === 0 ? (
-                    <p>No {topic} questions available.</p>
-                  ) : (
-                    <ul
-                      style={{
-                        listStyleType: "none",
-                        flexDirection: "column",
-                        display: "flex",
-                        width: "100%",
-                        padding: "0px",
-                        justifyContent: "flex-start",
-                        alignItems: "center",
-                      }}
-                    >
-                      {data.tags[topic].map((question) => (
-                        <li
-                          key={question.id}
-                          style={{ marginTop: "15px", width: "100%" }}
-                        >
-                          <strong>
-                            {question.id + ". " + question.question}
-                          </strong>
-                          <p>
-                            <strong>Sol. </strong>
-                            <span>{question.answer}</span>
-                          </p>
-                          <div
-                            style={{
-                              backgroundColor: "#f8f8f8",
-                              marginTop: "5px",
-                              margin: "2px",
-                              padding: "10px",
-                              borderRadius: "5px",
-                              position: "relative",
-                            }}
-                          >
-                            <button
-                              onClick={() => handleCopy(question.code)}
-                              style={{
-                                display: "flex",
-                                marginLeft: "auto",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                color: "#508D4E",
-                                border: "none",
-                                padding: "2px 5px",
-                                borderRadius: "5px",
-                                cursor: "pointer",
-                                fontSize: "20px",
-                              }}
-                            >
-                              <IoCopy />
-                            </button>
-                            {question.code}
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
+                  {topic} Questions
+                </a>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
+      )}
+
+      {/* Main Content */}
+      <div
+        style={{
+          marginLeft: isSidebarOpen ? "30%" : "0",
+          width: isSidebarOpen ? "70%" : "100%",
+          padding: "20px",
+          overflowY: "auto",
+          height: "100vh",
+        }}
+      >
+        {!isSidebarOpen && (
+          <button
+            onClick={toggleSidebar}
+            style={{
+              position: "absolute",
+              top: "100px",
+              left: "20px",
+              backgroundColor: "#508D4E",
+              color: "white",
+              border: "none",
+              padding: "10px",
+              cursor: "pointer",
+              borderRadius: "5px",
+            }}
+          >
+            Contents
+          </button>
+        )}
+        <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
+          {data.name} Questions
+        </h2>
+        {Object.keys(data.tags).map((topic) => (
+          <div id={topic} key={topic} style={{ marginBottom: "30px" }}>
+            <h3>{topic} Questions</h3>
+            {data.tags[topic].length === 0 ? (
+              <p>No {topic} questions available.</p>
+            ) : (
+              <ul style={{ listStyleType: "none", padding: "0" }}>
+                {data.tags[topic].map((question) => (
+                  <li
+                    key={question.id}
+                    style={{
+                      marginBottom: "15px",
+                      padding: "10px",
+                      border: "1px solid #ddd",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    <strong>
+                      {question.id}. {question.question}
+                    </strong>
+                    <p>
+                      <strong>Sol. </strong>
+                      {question.answer}
+                    </p>
+                    {question.code && (
+                      <div
+                        style={{
+                          backgroundColor: "#f8f8f8",
+                          marginTop: "5px",
+                          padding: "10px",
+                          borderRadius: "5px",
+                          position: "relative",
+                        }}
+                      >
+                        <button
+                          onClick={() => handleCopy(question.code)}
+                          style={{
+                            position: "absolute",
+                            top: "10px",
+                            right: "10px",
+                            color: "#508D4E",
+                            border: "none",
+                            backgroundColor: "transparent",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <IoCopy fontSize="20px" />
+                        </button>
+                        <pre
+                          style={{
+                            whiteSpace: "pre-wrap",
+                            wordWrap: "break-word",
+                          }}
+                        >
+                          {question.code}
+                        </pre>
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );
