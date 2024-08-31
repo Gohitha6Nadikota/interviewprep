@@ -4,7 +4,7 @@ import { BiArrowBack } from "react-icons/bi";
 import { IoMdClose } from "react-icons/io";
 import { IoCopy } from "react-icons/io5";
 import { newquestions } from "./data";
-
+import { BiSolidFoodMenu } from "react-icons/bi";
 const InfoCard = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
@@ -42,32 +42,28 @@ const InfoCard = () => {
       style={{
         display: "flex",
         flexDirection: "row",
-        marginTop: "9vh",
         width: "100%",
         height: "100vh",
         overflow: "hidden",
       }}
     >
-      {/* Back Arrow */}
       <div
         onClick={handleBack}
         style={{
           display: "flex",
           alignItems: "center",
-          position: "absolute",
           top: "6px",
           left: "20px",
           cursor: "pointer",
-          zIndex: 2, // Ensure it stays above other content
         }}
       >
-        <BiArrowBack style={{ fontSize: "23px", color: "black" }} />
+        <BiArrowBack style={{ fontSize: "23px", color: "white" }} />
       </div>
 
       {isSidebarOpen && (
         <div
           style={{
-            width: "20%",
+            width: "240px",
             backgroundColor: "#508D4E",
             color: "black",
             padding: "20px",
@@ -75,6 +71,7 @@ const InfoCard = () => {
             position: "fixed",
             height: "100%",
             overflowY: "auto",
+            zIndex: 2, // Ensures sidebar is on top of content
           }}
         >
           <div
@@ -115,6 +112,7 @@ const InfoCard = () => {
                     color: "white",
                     textDecoration: "none",
                     fontSize: "16px",
+                    padding: "2px",
                   }}
                 >
                   {topic} Questions
@@ -128,34 +126,38 @@ const InfoCard = () => {
       {/* Main Content */}
       <div
         style={{
-          marginLeft: isSidebarOpen ? "30%" : "0",
-          width: isSidebarOpen ? "70%" : "100%",
+          width: "100%",
           padding: "20px",
           overflowY: "auto",
           height: "100vh",
         }}
       >
-        {!isSidebarOpen && (
-          <button
-            onClick={toggleSidebar}
-            style={{
-              position: "absolute",
-              top: "100px",
-              left: "20px",
-              backgroundColor: "#508D4E",
-              color: "white",
-              border: "none",
-              padding: "10px",
-              cursor: "pointer",
-              borderRadius: "5px",
-            }}
-          >
-            Contents
-          </button>
-        )}
-        <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
-          {data.name} Questions
-        </h2>
+        <div style={{display:'flex',alignItems:'center'}}>
+          {!isSidebarOpen && (
+            <button
+              onClick={toggleSidebar}
+              style={{
+                border: "none",
+                padding: "8px",
+                backgroundColor: "transparent",
+                cursor: "pointer",
+                borderRadius: "5px",
+              }}
+            >
+              <BiSolidFoodMenu
+                style={{
+                  fontSize: "34px",
+                  color: "#508d4e",
+                  cursor: "pointer",
+                }}
+              />
+            </button>
+          )}
+          <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
+            {data.name} Questions
+          </h2>
+        </div>
+
         {Object.keys(data.tags).map((topic) => (
           <div id={topic} key={topic} style={{ marginBottom: "30px" }}>
             <h3>{topic} Questions</h3>
